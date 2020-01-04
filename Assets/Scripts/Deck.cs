@@ -5,20 +5,22 @@ using UnityEngine;
 public class Deck : MonoBehaviour
 {
     [SerializeField]
-    private GameObject card_body;
-    private List<Card> CardDeck = new List<Card>();
-    private List<GameObject> Cards = new List<GameObject>();
+    private GameObject card_body;   // Card prefab
+    private List<Card> CardDeck = new List<Card>();             // List of abstact cards
+    private List<GameObject> Cards = new List<GameObject>();    // List of physics cards
     // Start is called before the first frame update
     void Start()
     {
         CreateDeck();
-        Print();
+        //Print();
         for (int i = 0; i < 2; i++) ShuffleDeck();
-        Print();
+        //Print();
         CreateVisualDeck();
     }
+    // Creating deck of cards
     private void CreateDeck()
     {
+        // Add simple cards
         for (int color = 1; color <= 4; color++)
             for (int form = 1; form <= 4; form++)
                 for (int number = 1; number <= 4; number++)
@@ -28,24 +30,26 @@ public class Deck : MonoBehaviour
                     temp_card.SetProperties(color, form, number);
                     CardDeck.Add(temp_card);
                 }
+        // Add jokers
         Card joker = new Card();
         joker.SetJoker();
         joker.SetBody(card_body);
         CardDeck.Add(joker);
         CardDeck.Add(joker);
     }
-
+    // Creating visuality of deck
+    // TODO: Reverse card crating
     private void CreateVisualDeck()
     {
         int i = 0;
         float step = 1f / 66f;
-        Debug.Log(CardDeck.Count);
         foreach (Card c in CardDeck)
         {
             Cards.Add(Instantiate(c.Body, new Vector3(1,1+step*i,1), Quaternion.identity));
             i += 1;
         }
     }
+    // Shuffle deck
     private void ShuffleDeck()
     {
         for (int index = 0; index < CardDeck.Count - 3; index++)
@@ -56,6 +60,7 @@ public class Deck : MonoBehaviour
             CardDeck[index] = temp_card;
         }
     }
+    // Get top card from deck
     public Card GetCard()
     {
         Card temp_card = null;
@@ -66,7 +71,7 @@ public class Deck : MonoBehaviour
         }
         return temp_card;
     }
-
+    // Print all card in  deck
     public void Print()
     {
         foreach(Card deck_card in CardDeck)
