@@ -38,15 +38,17 @@ public class Deck : MonoBehaviour
         CardDeck.Add(joker);
     }
     // Creating visuality of deck
-    // TODO: Reverse card crating
     private void CreateVisualDeck()
     {
-        int i = 0;
+        GameObject temp_card;
+        int i = CardDeck.Count;
         float step = 1f / 66f;
         foreach (Card c in CardDeck)
         {
-            Cards.Add(Instantiate(c.Body, new Vector3(1,1+step*i,1), Quaternion.identity));
-            i += 1;
+            temp_card = (Instantiate(c.Body, new Vector3(1,1+step*i,1), Quaternion.Euler(0,0,180)));
+            temp_card.name = "Card" + (CardDeck.Count - i + 1).ToString();
+            Cards.Add(temp_card);
+            i -= 1;
         }
     }
     // Shuffle deck
