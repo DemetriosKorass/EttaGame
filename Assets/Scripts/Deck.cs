@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Deck : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject card_body;
     private List<Card> CardDeck = new List<Card>();
+    private List<GameObject> Cards = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -12,8 +15,8 @@ public class Deck : MonoBehaviour
         Print();
         for (int i = 0; i < 2; i++) ShuffleDeck();
         Print();
+        CreateVisualDeck();
     }
-
     private void CreateDeck()
     {
         for (int color = 1; color <= 4; color++)
@@ -21,15 +24,28 @@ public class Deck : MonoBehaviour
                 for (int number = 1; number <= 4; number++)
                 {
                     Card temp_card = new Card();
+                    temp_card.SetBody(card_body);
                     temp_card.SetProperties(color, form, number);
                     CardDeck.Add(temp_card);
                 }
         Card joker = new Card();
         joker.SetJoker();
+        joker.SetBody(card_body);
         CardDeck.Add(joker);
         CardDeck.Add(joker);
     }
 
+    private void CreateVisualDeck()
+    {
+        int i = 0;
+        float step = 1f / 66f;
+        Debug.Log(CardDeck.Count);
+        foreach (Card c in CardDeck)
+        {
+            Cards.Add(Instantiate(c.Body, new Vector3(1,1+step*i,1), Quaternion.identity));
+            i += 1;
+        }
+    }
     private void ShuffleDeck()
     {
         for (int index = 0; index < CardDeck.Count - 3; index++)
